@@ -6,15 +6,17 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 function App() {
-  const getCaseRecords = (name, ssn, caseNum) => {
+  const getCaseRecords = (e, name, ssn, caseNum) => {
+    console.log(e.target);
+    e.preventDefault();
     console.log(
       "Get records from - Include Case #, SSN and DOB as input criteria"
     );
   };
   return (
-    <div>
-      <div className="Form-page-container">
-        <header className="App-header">
+    <div className="App-container">
+      <div className="Form-container">
+        <header className="Form-header">
           <h1>Set Up Custom Connector</h1>
           <h6>
             Add credentials to set up a Custom Connector. For details on usage,
@@ -22,8 +24,8 @@ function App() {
           </h6>
         </header>
 
-        <div className="Form-container">
-          <Form action={getCaseRecords}>
+        <div className="Form">
+          <Form method="POST" onSubmit={(e) => getCaseRecords(e)}>
             <Form.Group className="mb-3" required>
               <Form.Label htmlFor="name">
                 Name <span className="required-asterisk">*</span>
