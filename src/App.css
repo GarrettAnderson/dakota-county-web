@@ -1,31 +1,9 @@
-.App {
-  text-align: center;
+.Form-container {
+  width: 80;
+  margin: 0 auto;
+  border: 2px solid black;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-.MuiInputLabel-asterisk {
+.required-asterisk {
   color: red;
-}
-
-.MuiInputLabel-root {
-  position: relative !important;
-  -webkit-transform: translate(0px, 0px) scale(1);
-  -moz-transform: translate(0px, 0px) scale(1);
-  -ms-transform: translate(0px, 0px) scale(1);
-  transform: translate(0px, 0px) scale(1);
-  text-align: left;
 }

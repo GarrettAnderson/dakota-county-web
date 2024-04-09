@@ -1,12 +1,9 @@
 import * as React from "react";
-import FormControl, { useFormControl } from "@mui/material/FormControl";
-import {
-  FormHelperText,
-  Input,
-  InputLabel,
-  OutlinedInput,
-} from "@mui/material";
 import "./App.css";
+// imports for React Bootstrap
+import "bootstrap/dist/css/bootstrap.min.css";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 function App() {
   const getCaseRecords = (name, ssn, caseNum) => {
@@ -15,69 +12,109 @@ function App() {
     );
   };
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Set Up Custom Connector</h1>
-        <h6>
-          Add credentials to set up a Custom Connector. For details on usage,
-          please check the <a href="#">documentation</a>.
-        </h6>
-      </header>
+    <div>
+      <div className="Form-page-container">
+        <header className="App-header">
+          <h1>Set Up Custom Connector</h1>
+          <h6>
+            Add credentials to set up a Custom Connector. For details on usage,
+            please check the <a href="#">documentation</a>.
+          </h6>
+        </header>
 
-      <form action={getCaseRecords}>
-        <FormControl required>
-          <InputLabel htmlFor="name">Name</InputLabel>
-          <OutlinedInput id="name" aria-describedby="my-helper-text" />
-          <FormHelperText id="my-helper-text">
-            Provide unique name for the connector
-          </FormHelperText>
-        </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="name">Authentication Type</InputLabel>
-          {/* Select dropdown of options - OAuth 2.0 */}
-        </FormControl>
-        <FormControl required>
-          <InputLabel htmlFor="resource-domain">Resource Domain</InputLabel>
-          <OutlinedInput
-            id="resource-domain"
-            aria-describedby="my-helper-text"
-            placeholder="https://"
-          />
-          <FormHelperText id="my-helper-text">
-            Domain that will be used to access data
-          </FormHelperText>
-        </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="grant-type">Grant Type</InputLabel>
-          {/* Select dropdown of options - Password Grant */}
-        </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="username">User Name</InputLabel>
-          <OutlinedInput id="username" variant="outlined" />
-        </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="password" disableAnimation={true}>
-            Password
-          </InputLabel>
-          <OutlinedInput id="password" variant="outlined" />
-        </FormControl>
-        <FormControl required>
-          <InputLabel htmlFor="client-id">Client ID</InputLabel>
-          <OutlinedInput id="client-id" variant="outlined" />
-        </FormControl>
-        <label htmlFor="client-secret"></label>{" "}
-        {/* Is textarea within label similart to inputs?? */}
-        <textarea name="client-secret" rows={4} cols={40} />
-        <br />
-        <button
-        // formAction={save}
-        >
-          Cancel
-        </button>
-        <button type="submit" name="button" value="submit">
-          Done
-        </button>
-      </form>
+        <div className="Form-container">
+          <Form action={getCaseRecords}>
+            <Form.Group className="mb-3" required>
+              <Form.Label htmlFor="name">
+                Name <span className="required-asterisk">*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                id="name"
+                aria-describedby="my-helper-text"
+              />
+              <Form.Text className="text-muted" id="my-helper-text">
+                Provide unique name for the connector
+              </Form.Text>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label htmlFor="name">Authentication Type</Form.Label>
+              <Form.Select aria-label="Select App Authentication Type">
+                <option value="password-grant">OAuth 2.0</option>
+                <option value="2">Option Two</option>
+                <option value="3">Option Three</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" required>
+              <Form.Label htmlFor="resource-domain">
+                Resource Domain <span className="required-asterisk">*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                id="resource-domain"
+                aria-describedby="my-helper-text"
+                placeholder="https://"
+              />
+              <Form.Text className="text-muted" id="my-helper-text">
+                Domain that will be used to access data
+              </Form.Text>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label htmlFor="grant-type">Grant Type</Form.Label>
+              <Form.Select aria-label="Select Grant Type">
+                <option value="password-grant">Password Grant</option>
+                <option value="2">Option Two</option>
+                <option value="3">Option Three</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label htmlFor="username">User Name</Form.Label>
+              <Form.Control type="text" id="username" />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label htmlFor="password">Password</Form.Label>
+              <Form.Control type="text" id="password" />
+            </Form.Group>
+            <Form.Group className="mb-3" required>
+              <Form.Label htmlFor="client-id">
+                Client ID <span className="required-asterisk">*</span>
+              </Form.Label>
+              <Form.Control type="text" id="client-id" />
+            </Form.Group>
+            <Form.Group className="mb-3" required>
+              <Form.Label htmlFor="client-secret">
+                Client Secret <span className="required-asterisk">*</span>
+              </Form.Label>
+              <Form.Control type="textarea" id="client-secret" />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label htmlFor="scope">Scope</Form.Label>
+              <Form.Control type="text" id="scope" />
+            </Form.Group>
+            <Form.Group className="mb-3" required>
+              <Form.Label htmlFor="token-url">
+                Token URL <span className="required-asterisk">*</span>
+              </Form.Label>
+              <Form.Control type="text" id="token-url" />
+            </Form.Group>
+            <br />
+            <Button
+              variant="light"
+              // formAction={save}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="secondary"
+              type="submit"
+              name="Button"
+              value="submit"
+            >
+              Done
+            </Button>
+          </Form>
+        </div>
+      </div>
     </div>
   );
 }
