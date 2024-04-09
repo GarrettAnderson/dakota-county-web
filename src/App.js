@@ -1,18 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import "./App.css";
 // imports for React Bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
+function formReducer(state, action) {
+  switch (action.type) {
+    case "initialize": {
+      return action.payload;
+    }
+  }
+}
+
 function App() {
-  // Apply "disabled" attribute on "Done" button until the for is completely filled out
+  let initialFormState = {
+    name: "",
+    auth: "",
+    domain: "",
+    username: "",
+    password: "",
+    clientId: "",
+    clientSecret: "",
+    scope: "",
+    token: "",
+  };
+
+  let [formData, dispatchForm] = useReducer(formReducer, initialFormState);
+  // Apply "disabled" attribute on "Done" button until the form is completely filled out?? or until just required are filled out??
   let [doneBtnDisabled, setDoneBtnDisabled] = useState(true);
-  const getCaseRecords = (e, name, ssn, caseNum) => {
+
+  if (formData.name != "" && formData.auth != "" && formData.domain != "") {
+    setDoneBtnDisabled(false);
+  }
+
+  // let activateDoneBtn = () => {
+  //   Object.values(formData).map((val) => {
+  //     console.log("Check to see if form is filled out");
+  //     // if all of the entries are truthy, or not empty strings
+  //     if (val !== "") {
+  //       setDoneBtnDisabled(false);
+  //     }
+  //   });
+  // };
+
+  const submitForm = (e, name, ssn, caseNum) => {
     console.log(e.target);
     e.preventDefault();
+
+    // Construct a FormData instance to capture form input data
+    const formData = new FormData();
+  };
+
+  const getCaseRecords = (e, name, ssn, caseNum) => {
     console.log(
-      "Get records from - Include Case #, SSN and DOB as input criteria"
+      "Trigger API call to Get records - Include Case #, SSN and DOB as input criteria"
     );
   };
 
@@ -28,13 +70,14 @@ function App() {
         </header>
 
         <div className="form">
-          <Form method="POST" onSubmit={(e) => getCaseRecords(e)}>
+          <Form method="POST" onSubmit={(e) => submitForm(e)}>
             <Form.Group className="mb-3" required>
               <Form.Label htmlFor="name">
                 Name <span className="required-asterisk">*</span>
               </Form.Label>
               <Form.Control
                 type="text"
+                name="name"
                 id="name"
                 aria-describedby="my-helper-text"
               />
@@ -43,8 +86,11 @@ function App() {
               </Form.Text>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label htmlFor="name">Authentication Type</Form.Label>
-              <Form.Select aria-label="Select App Authentication Type">
+              <Form.Label htmlFor="auth-type">Authentication Type</Form.Label>
+              <Form.Select
+                aria-label="Select App Authentication Type"
+                name="auth-type"
+              >
                 <option value="password-grant">OAuth 2.0</option>
                 <option value="2">Option Two</option>
                 <option value="3">Option Three</option>
@@ -56,6 +102,7 @@ function App() {
               </Form.Label>
               <Form.Control
                 type="text"
+                name="resource-domain"
                 id="resource-domain"
                 aria-describedby="my-helper-text"
                 placeholder="https://"
@@ -66,7 +113,7 @@ function App() {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="grant-type">Grant Type</Form.Label>
-              <Form.Select aria-label="Select Grant Type">
+              <Form.Select aria-label="Select Grant Type" name="grant-type">
                 <option value="password-grant">Password Grant</option>
                 <option value="2">Option Two</option>
                 <option value="3">Option Three</option>
@@ -74,33 +121,38 @@ function App() {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="username">User Name</Form.Label>
-              <Form.Control type="text" id="username" />
+              <Form.Control type="text" id="username" name="username" />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="password">Password</Form.Label>
-              <Form.Control type="text" id="password" />
+              <Form.Control type="password" id="password" name="password" />
             </Form.Group>
             <Form.Group className="mb-3" required>
               <Form.Label htmlFor="client-id">
                 Client ID <span className="required-asterisk">*</span>
               </Form.Label>
-              <Form.Control type="text" id="client-id" />
+              <Form.Control type="text" id="client-id" name="client-id" />
             </Form.Group>
             <Form.Group className="mb-3" required>
               <Form.Label htmlFor="client-secret">
                 Client Secret <span className="required-asterisk">*</span>
               </Form.Label>
-              <Form.Control type="textarea" id="client-secret" />
+              <Form.Control
+                as="textarea"
+                id="client-secret"
+                name="client-secret"
+                rows={3}
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="scope">Scope</Form.Label>
-              <Form.Control type="text" id="scope" />
+              <Form.Control type="text" id="scope" name="score" />
             </Form.Group>
             <Form.Group className="mb-3" required>
               <Form.Label htmlFor="token-url">
                 Token URL <span className="required-asterisk">*</span>
               </Form.Label>
-              <Form.Control type="text" id="token-url" />
+              <Form.Control type="text" id="token-url" name="token-url" />
             </Form.Group>
             <br />
 
@@ -119,7 +171,7 @@ function App() {
                   type="submit"
                   name="Button"
                   value="submit"
-                  disabled={doneBtnDisabled ? true : false}
+                  disabled={!doneBtnDisabled}
                 >
                   Done
                 </Button>

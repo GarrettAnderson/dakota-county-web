@@ -47,5 +47,6 @@
     flex-direction: row;
     width: 35%;
     justify-content: space-evenly;
+    max-width: 10rem;
   }
 }
