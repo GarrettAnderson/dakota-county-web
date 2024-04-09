@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import "./App.css";
 // imports for React Bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -6,6 +6,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 function App() {
+  // Apply "disabled" attribute on "Done" button until the for is completely filled out
+  let [doneBtnDisabled, setDoneBtnDisabled] = useState(true);
   const getCaseRecords = (e, name, ssn, caseNum) => {
     console.log(e.target);
     e.preventDefault();
@@ -13,10 +15,11 @@ function App() {
       "Get records from - Include Case #, SSN and DOB as input criteria"
     );
   };
+
   return (
-    <div className="App-container">
-      <div className="Form-container">
-        <header className="Form-header">
+    <div className="app-container">
+      <div className="form-container">
+        <header className="form-header mb-3">
           <h1>Set Up Custom Connector</h1>
           <h6>
             Add credentials to set up a Custom Connector. For details on usage,
@@ -24,7 +27,7 @@ function App() {
           </h6>
         </header>
 
-        <div className="Form">
+        <div className="form">
           <Form method="POST" onSubmit={(e) => getCaseRecords(e)}>
             <Form.Group className="mb-3" required>
               <Form.Label htmlFor="name">
@@ -100,20 +103,28 @@ function App() {
               <Form.Control type="text" id="token-url" />
             </Form.Group>
             <br />
-            <Button
-              variant="light"
-              // formAction={save}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="secondary"
-              type="submit"
-              name="Button"
-              value="submit"
-            >
-              Done
-            </Button>
+
+            <div className="form-btns-container">
+              <div className="form-btns">
+                <Button
+                  variant="outline-dark"
+                  className="mb-2"
+                  // formAction={save}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="secondary"
+                  className="mb-2"
+                  type="submit"
+                  name="Button"
+                  value="submit"
+                  disabled={doneBtnDisabled ? true : false}
+                >
+                  Done
+                </Button>
+              </div>
+            </div>
           </Form>
         </div>
       </div>

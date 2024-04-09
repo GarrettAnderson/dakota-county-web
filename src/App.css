@@ -1,9 +1,51 @@
-.Form-container {
-  width: 80;
+.app-container {
+  background-color: #d3d3d3;
+  padding: 1rem 0;
+}
+
+.form-container {
+  width: 80%;
   margin: 0 auto;
-  border: 2px solid black;
+  /* border: 2px solid black; */
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: -1px 4px 5px 1px #6a6969;
+}
+
+.form-header h1,
+.form-header h6 {
+  font-weight: 400;
+  text-align: center;
+}
+
+.form-header h6 a {
+  text-decoration: none;
 }
 
 .required-asterisk {
   color: red;
+}
+
+.form-btns-container {
+  display: flex;
+  justify-content: end;
+}
+
+.form-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.form-btns button {
+  border-radius: 50px;
+}
+
+@media only screen and (min-device-width: 568px) {
+  .form-btns {
+    flex-direction: row;
+    width: 35%;
+    justify-content: space-evenly;
+  }
 }
