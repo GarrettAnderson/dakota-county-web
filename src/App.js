@@ -153,7 +153,7 @@ function App() {
                 id="name"
                 aria-describedby="name-input-parameter"
                 required
-                onChange={onInputChange}
+                onBlur={onInputChange}
               />
               <Form.Text className="text-muted" id="name-input-parameter">
                 Provide unique name for the connector
@@ -165,7 +165,7 @@ function App() {
                 id="authType"
                 aria-label="Select App Authentication Type"
                 name="auth"
-                onChange={onInputChange}
+                onBlur={onInputChange}
               >
                 <option value=""></option>
                 <option value="password-grant">OAuth 2.0</option>
@@ -184,7 +184,7 @@ function App() {
                 aria-describedby="domain-input-helper-text"
                 placeholder="https://"
                 required
-                onChange={onInputChange}
+                onBlur={onInputChange}
               />
               <Form.Text className="text-muted" id="domain-input-helper-text">
                 Domain that will be used to access data
@@ -196,7 +196,7 @@ function App() {
                 id="grantType"
                 aria-label="Select Grant Type"
                 name="grant"
-                onChange={onInputChange}
+                onBlur={onInputChange}
               >
                 <option value=""></option>
                 <option value="password-grant">Password Grant</option>
@@ -210,7 +210,7 @@ function App() {
                 type="text"
                 id="username"
                 name="username"
-                onChange={onInputChange}
+                onBlur={onInputChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -219,7 +219,7 @@ function App() {
                 type="password"
                 id="password"
                 name="password"
-                onChange={onInputChange}
+                onBlur={onInputChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -231,7 +231,7 @@ function App() {
                 id="clientId"
                 name="clientId"
                 required
-                onChange={onInputChange}
+                onBlur={onInputChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -244,7 +244,7 @@ function App() {
                 name="clientSecret"
                 rows={3}
                 required
-                onChange={onInputChange}
+                onBlur={onInputChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -253,7 +253,7 @@ function App() {
                 type="text"
                 id="scope"
                 name="scope"
-                onChange={onInputChange}
+                onBlur={onInputChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -265,7 +265,7 @@ function App() {
                 id="tokenUrl"
                 name="token"
                 required
-                onChange={onInputChange}
+                onBlur={onInputChange}
               />
             </Form.Group>
             <br />
