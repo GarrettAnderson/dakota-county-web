@@ -26,9 +26,7 @@ function App() {
 
       <form action={getCaseRecords}>
         <FormControl required>
-          <InputLabel htmlFor="name" disableAnimation={true}>
-            Name
-          </InputLabel>
+          <InputLabel htmlFor="name">Name</InputLabel>
           <OutlinedInput id="name" aria-describedby="my-helper-text" />
           <FormHelperText id="my-helper-text">
             Provide unique name for the connector
