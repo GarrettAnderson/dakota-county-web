@@ -10,6 +10,16 @@ function formReducer(state, action) {
     case "initialize": {
       return action.payload;
     }
+    case "inputFormData": {
+      console.log("state:", state);
+      console.log("action obj:", action.input.name);
+      let [inputName, inputVal] = [action.input.name, action.input.val];
+      console.log("name:", inputName, "val", inputVal);
+      return {
+        ...state,
+        [action.input.name]: action.input.val,
+      };
+    }
   }
 }
 
@@ -18,6 +28,7 @@ function App() {
     name: "",
     auth: "",
     domain: "",
+    grant: "",
     username: "",
     password: "",
     clientId: "",
@@ -25,24 +36,84 @@ function App() {
     scope: "",
     token: "",
   };
-
+  let timeLeft = 0;
   let [formData, dispatchForm] = useReducer(formReducer, initialFormState);
   // Apply "disabled" attribute on "Done" button until the form is completely filled out?? or until just required are filled out??
   let [doneBtnDisabled, setDoneBtnDisabled] = useState(true);
 
-  if (formData.name != "" && formData.auth != "" && formData.domain != "") {
-    setDoneBtnDisabled(false);
-  }
+  // Set up form input validation to disable "Done" btn until all/??just required?? fields are filled out
+  useEffect(() => {
+    console.log(
+      "how to determine when ALL inputs are filled/validated in order to activate DONE btn?"
+    );
+    // if (
+    //   formData.name != ""
+    //   // && formData.auth != "" && formData.domain != ""
+    // ) {
+    //   console.log("name input filled");
+    //   // setDoneBtnDisabled(false);
+    // }
 
-  // let activateDoneBtn = () => {
-  //   Object.values(formData).map((val) => {
-  //     console.log("Check to see if form is filled out");
-  //     // if all of the entries are truthy, or not empty strings
-  //     if (val !== "") {
-  //       setDoneBtnDisabled(false);
-  //     }
-  //   });
-  // };
+    activateDoneBtn();
+  });
+
+  // Set up debouncer for every form input to ensure user entry is final to reduce possibility of race conditions in the future
+  // useEffect(() => {
+  //   const delayInputTimeoutId = setTimeout(() => {
+  //     // setState(withThisValue);
+  //     console.log(formData);
+  //     // run dispatch to update state via reducer
+  //   }, 500);
+  //   return () => clearTimeout(delayInputTimeoutId);
+  // }, [formData]);
+
+  let activateDoneBtn = () => {
+    console.log("Check to see if form is filled out", formData);
+    // Object.entries(formData).map((val, i) => {
+    //   console.log(val);
+    //   // if all of the entries are truthy, or not empty strings
+    //   if (val[1] !== "") {
+    //     console.log("all fields input");
+    //     setDoneBtnDisabled(false);
+    //   }
+    // });
+
+    let iterableFormData = Object.entries(formData);
+    console.log(iterableFormData);
+    // filter iterable Form Data to see if any field is blank/null/empty string
+    // if the filtered array is empty, there are no empty fields, set done button state to false
+    let emptyFields = iterableFormData.filter((item) => {
+      return item[1] === "";
+    });
+    console.log(emptyFields);
+
+    if (emptyFields.length === 0) {
+      console.log("all fields input");
+      setDoneBtnDisabled(false);
+    }
+  };
+
+  // Update state object with input values after user fills in inputs
+  // Setup debouncer??/Timer to ensure user has finished typing by setting timeLeft variable above
+  const onInputChange = (e) => {
+    console.log(e.target.name);
+
+    if (timeLeft) {
+      console.log("time left cleared", timeLeft);
+      clearTimeout(timeLeft);
+    } else {
+      const timeLeft = setTimeout(() => {
+        // setState(withThisValue);
+        console.log(formData);
+
+        // run dispatch to update state via reducer
+        dispatchForm({
+          type: "inputFormData",
+          input: { name: e.target.name, val: e.target.value },
+        });
+      }, 500);
+    }
+  };
 
   const submitForm = (e, name, ssn, caseNum) => {
     console.log(e.target);
@@ -52,6 +123,7 @@ function App() {
     const formData = new FormData();
   };
 
+  // Query to the API for relavent data
   const getCaseRecords = (e, name, ssn, caseNum) => {
     console.log(
       "Trigger API call to Get records - Include Case #, SSN and DOB as input criteria"
@@ -71,7 +143,7 @@ function App() {
 
         <div className="form">
           <Form method="POST" onSubmit={(e) => submitForm(e)}>
-            <Form.Group className="mb-3" required>
+            <Form.Group className="mb-3">
               <Form.Label htmlFor="name">
                 Name <span className="required-asterisk">*</span>
               </Form.Label>
@@ -79,80 +151,122 @@ function App() {
                 type="text"
                 name="name"
                 id="name"
-                aria-describedby="my-helper-text"
+                aria-describedby="name-input-parameter"
+                required
+                onChange={onInputChange}
               />
-              <Form.Text className="text-muted" id="my-helper-text">
+              <Form.Text className="text-muted" id="name-input-parameter">
                 Provide unique name for the connector
               </Form.Text>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label htmlFor="auth-type">Authentication Type</Form.Label>
+              <Form.Label htmlFor="auth">Authentication Type</Form.Label>
               <Form.Select
+                id="authType"
                 aria-label="Select App Authentication Type"
-                name="auth-type"
+                name="auth"
+                onChange={onInputChange}
               >
+                <option value=""></option>
                 <option value="password-grant">OAuth 2.0</option>
-                <option value="2">Option Two</option>
-                <option value="3">Option Three</option>
+                <option value="option-two">Option Two</option>
+                <option value="option-three">Option Three</option>
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3" required>
-              <Form.Label htmlFor="resource-domain">
+            <Form.Group className="mb-3">
+              <Form.Label htmlFor="domain">
                 Resource Domain <span className="required-asterisk">*</span>
               </Form.Label>
               <Form.Control
                 type="text"
-                name="resource-domain"
-                id="resource-domain"
-                aria-describedby="my-helper-text"
+                name="domain"
+                id="resourceDomain"
+                aria-describedby="domain-input-helper-text"
                 placeholder="https://"
+                required
+                onChange={onInputChange}
               />
-              <Form.Text className="text-muted" id="my-helper-text">
+              <Form.Text className="text-muted" id="domain-input-helper-text">
                 Domain that will be used to access data
               </Form.Text>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label htmlFor="grant-type">Grant Type</Form.Label>
-              <Form.Select aria-label="Select Grant Type" name="grant-type">
+              <Form.Label htmlFor="grant">Grant Type</Form.Label>
+              <Form.Select
+                id="grantType"
+                aria-label="Select Grant Type"
+                name="grant"
+                onChange={onInputChange}
+              >
+                <option value=""></option>
                 <option value="password-grant">Password Grant</option>
-                <option value="2">Option Two</option>
-                <option value="3">Option Three</option>
+                <option value="option-two">Option Two</option>
+                <option value="option-three">Option Three</option>
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="username">User Name</Form.Label>
-              <Form.Control type="text" id="username" name="username" />
+              <Form.Control
+                type="text"
+                id="username"
+                name="username"
+                onChange={onInputChange}
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="password">Password</Form.Label>
-              <Form.Control type="password" id="password" name="password" />
+              <Form.Control
+                type="password"
+                id="password"
+                name="password"
+                onChange={onInputChange}
+              />
             </Form.Group>
-            <Form.Group className="mb-3" required>
-              <Form.Label htmlFor="client-id">
+            <Form.Group className="mb-3">
+              <Form.Label htmlFor="clientId">
                 Client ID <span className="required-asterisk">*</span>
               </Form.Label>
-              <Form.Control type="text" id="client-id" name="client-id" />
+              <Form.Control
+                type="text"
+                id="clientId"
+                name="clientId"
+                required
+                onChange={onInputChange}
+              />
             </Form.Group>
-            <Form.Group className="mb-3" required>
+            <Form.Group className="mb-3">
               <Form.Label htmlFor="client-secret">
                 Client Secret <span className="required-asterisk">*</span>
               </Form.Label>
               <Form.Control
                 as="textarea"
-                id="client-secret"
-                name="client-secret"
+                id="clientSecret"
+                name="clientSecret"
                 rows={3}
+                required
+                onChange={onInputChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="scope">Scope</Form.Label>
-              <Form.Control type="text" id="scope" name="score" />
+              <Form.Control
+                type="text"
+                id="scope"
+                name="scope"
+                onChange={onInputChange}
+              />
             </Form.Group>
-            <Form.Group className="mb-3" required>
-              <Form.Label htmlFor="token-url">
+            <Form.Group className="mb-3">
+              <Form.Label htmlFor="token">
                 Token URL <span className="required-asterisk">*</span>
               </Form.Label>
-              <Form.Control type="text" id="token-url" name="token-url" />
+              <Form.Control
+                type="text"
+                id="tokenUrl"
+                name="token"
+                required
+                onChange={onInputChange}
+              />
             </Form.Group>
             <br />
 
@@ -171,7 +285,7 @@ function App() {
                   type="submit"
                   name="Button"
                   value="submit"
-                  disabled={!doneBtnDisabled}
+                  disabled={doneBtnDisabled ? true : false}
                 >
                   Done
                 </Button>
