@@ -42,20 +42,12 @@ function App() {
   let [doneBtnDisabled, setDoneBtnDisabled] = useState(true);
 
   // Set up form input validation to disable "Done" btn until all/??just required?? fields are filled out
-  useEffect(() => {
-    console.log(
-      "how to determine when ALL inputs are filled/validated in order to activate DONE btn?"
-    );
-    // if (
-    //   formData.name != ""
-    //   // && formData.auth != "" && formData.domain != ""
-    // ) {
-    //   console.log("name input filled");
-    //   // setDoneBtnDisabled(false);
-    // }
-
-    activateDoneBtn();
-  });
+  // useEffect(() => {
+  //   console.log(
+  //     "how to determine when ALL inputs are filled/validated in order to activate DONE btn?"
+  //   );
+  //   activateDoneBtn();
+  // });
 
   // Set up debouncer for every form input to ensure user entry is final to reduce possibility of race conditions in the future
   // useEffect(() => {
@@ -94,25 +86,17 @@ function App() {
   };
 
   // Update state object with input values after user fills in inputs
-  // Setup debouncer??/Timer to ensure user has finished typing by setting timeLeft variable above
   const onInputChange = (e) => {
     console.log(e.target.name);
 
-    if (timeLeft) {
-      console.log("time left cleared", timeLeft);
-      clearTimeout(timeLeft);
-    } else {
-      const timeLeft = setTimeout(() => {
-        // setState(withThisValue);
-        console.log(formData);
+    // setState(withThisValue);
+    console.log(formData);
 
-        // run dispatch to update state via reducer
-        dispatchForm({
-          type: "inputFormData",
-          input: { name: e.target.name, val: e.target.value },
-        });
-      }, 500);
-    }
+    // run dispatch to update state via reducer
+    dispatchForm({
+      type: "inputFormData",
+      input: { name: e.target.name, val: e.target.value },
+    });
   };
 
   const submitForm = (e, name, ssn, caseNum) => {
