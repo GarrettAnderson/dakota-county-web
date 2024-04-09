@@ -37,9 +37,9 @@ function App() {
     token: "",
   };
   let timeLeft = 0;
-  let [formData, dispatchForm] = useReducer(formReducer, initialFormState);
+  let [formDataState, dispatchForm] = useReducer(formReducer, initialFormState);
   // Apply "disabled" attribute on "Done" button until the form is completely filled out?? or until just required are filled out??
-  let [doneBtnDisabled, setDoneBtnDisabled] = useState(true);
+  let [doneBtnDisabled, setDoneBtnDisabled] = useState(false);
 
   // Set up form input validation to disable "Done" btn until all/??just required?? fields are filled out
   // useEffect(() => {
@@ -60,7 +60,7 @@ function App() {
   // }, [formData]);
 
   let activateDoneBtn = () => {
-    console.log("Check to see if form is filled out", formData);
+    console.log("Check to see if form is filled out", formDataState);
     // Object.entries(formData).map((val, i) => {
     //   console.log(val);
     //   // if all of the entries are truthy, or not empty strings
@@ -70,7 +70,7 @@ function App() {
     //   }
     // });
 
-    let iterableFormData = Object.entries(formData);
+    let iterableFormData = Object.entries(formDataState);
     console.log(iterableFormData);
     // filter iterable Form Data to see if any field is blank/null/empty string
     // if the filtered array is empty, there are no empty fields, set done button state to false
@@ -90,7 +90,7 @@ function App() {
     console.log(e.target.name);
 
     // setState(withThisValue);
-    console.log(formData);
+    console.log(formDataState);
 
     // run dispatch to update state via reducer
     dispatchForm({
@@ -104,7 +104,8 @@ function App() {
     e.preventDefault();
 
     // Construct a FormData instance to capture form input data
-    const formData = new FormData();
+    const inputVals = new FormData(e.target);
+    console.log(formDataState);
   };
 
   // Query to the API for relavent data
