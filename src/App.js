@@ -25,7 +25,7 @@ function formReducer(state, action) {
 
 function App() {
   let initialFormState = {
-    name: "",
+    nameInput: "",
     auth: "",
     domain: "",
     grant: "",
@@ -97,6 +97,8 @@ function App() {
       type: "inputFormData",
       input: { name: e.target.name, val: e.target.value },
     });
+
+    console.log(formDataState["nameInput"]);
   };
 
   const submitForm = (e, name, ssn, caseNum) => {
@@ -105,7 +107,8 @@ function App() {
 
     // Construct a FormData instance to capture form input data
     const inputVals = new FormData(e.target);
-    console.log(formDataState);
+    // console.log(formDataState);
+    console.log(inputVals);
   };
 
   // Query to the API for relavent data
@@ -134,11 +137,13 @@ function App() {
               </Form.Label>
               <Form.Control
                 type="text"
-                name="name"
+                name="nameInput"
                 id="name"
+                value={formDataState["nameInput"]}
                 aria-describedby="name-input-parameter"
                 required
                 onBlur={onInputChange}
+                onChange={onInputChange}
               />
               <Form.Text className="text-muted" id="name-input-parameter">
                 Provide unique name for the connector
@@ -147,13 +152,14 @@ function App() {
             <Form.Group className="mb-3">
               <Form.Label htmlFor="auth">Authentication Type</Form.Label>
               <Form.Select
-                id="authType"
+                id="auth"
                 aria-label="Select App Authentication Type"
                 name="auth"
                 onBlur={onInputChange}
+                onChange={onInputChange}
               >
                 <option value=""></option>
-                <option value="password-grant">OAuth 2.0</option>
+                <option value="oauth2">OAuth 2.0</option>
                 <option value="option-two">Option Two</option>
                 <option value="option-three">Option Three</option>
               </Form.Select>
@@ -168,8 +174,10 @@ function App() {
                 id="resourceDomain"
                 aria-describedby="domain-input-helper-text"
                 placeholder="https://"
+                value={formDataState["domain"]}
                 required
                 onBlur={onInputChange}
+                onChange={onInputChange}
               />
               <Form.Text className="text-muted" id="domain-input-helper-text">
                 Domain that will be used to access data
@@ -178,10 +186,11 @@ function App() {
             <Form.Group className="mb-3">
               <Form.Label htmlFor="grant">Grant Type</Form.Label>
               <Form.Select
-                id="grantType"
+                id="grant"
                 aria-label="Select Grant Type"
                 name="grant"
                 onBlur={onInputChange}
+                onChange={onInputChange}
               >
                 <option value=""></option>
                 <option value="password-grant">Password Grant</option>
@@ -196,6 +205,8 @@ function App() {
                 id="username"
                 name="username"
                 onBlur={onInputChange}
+                onChange={onInputChange}
+                value={formDataState["username"]}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -205,6 +216,8 @@ function App() {
                 id="password"
                 name="password"
                 onBlur={onInputChange}
+                onChange={onInputChange}
+                value={formDataState["password"]}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -216,7 +229,9 @@ function App() {
                 id="clientId"
                 name="clientId"
                 required
+                value={formDataState["clientId"]}
                 onBlur={onInputChange}
+                onChange={onInputChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -230,6 +245,8 @@ function App() {
                 rows={3}
                 required
                 onBlur={onInputChange}
+                onChange={onInputChange}
+                value={formDataState["clientSecret"]}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -239,6 +256,8 @@ function App() {
                 id="scope"
                 name="scope"
                 onBlur={onInputChange}
+                onChange={onInputChange}
+                value={formDataState["scope"]}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -251,6 +270,8 @@ function App() {
                 name="token"
                 required
                 onBlur={onInputChange}
+                onChange={onInputChange}
+                value={formDataState["tokenUrl"]}
               />
             </Form.Group>
             <br />
@@ -268,7 +289,7 @@ function App() {
                   variant="secondary"
                   className="mb-2"
                   type="submit"
-                  name="Button"
+                  name="submitButton"
                   value="submit"
                   disabled={doneBtnDisabled ? true : false}
                 >
