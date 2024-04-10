@@ -97,8 +97,6 @@ function App() {
       type: "inputFormData",
       input: { name: e.target.name, val: e.target.value },
     });
-
-    console.log(formDataState["nameInput"]);
   };
 
   const submitForm = (e, name, ssn, caseNum) => {
@@ -107,8 +105,8 @@ function App() {
 
     // Construct a FormData instance to capture form input data
     const inputVals = new FormData(e.target);
-    // console.log(formDataState);
-    console.log(inputVals);
+    console.log(formDataState);
+    // console.log(inputVals);
   };
 
   // Query to the API for relavent data
